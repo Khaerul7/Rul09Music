@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-dm-sans), system-ui, sans-serif;
+    background: #09090b;
+    color: #e4e4e7;
+  }
+
+  /* Hide scrollbars globally, keep functionality */
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  /* Font variables */
+  .font-bebas { font-family: var(--font-bebas), sans-serif; }
+  .font-mono  { font-family: var(--font-dm-mono), monospace; }
+}
+
+@layer utilities {
+  /* Smooth scroll */
+  .scroll-smooth { scroll-behavior: smooth; }
+
+  /* Glassmorphism card */
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  /* Blue glow effect for active elements */
+  .glow-blue {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  }
+
+  /* Truncate text */
+  .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
