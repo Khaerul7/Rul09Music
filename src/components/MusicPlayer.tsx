@@ -42,20 +42,30 @@ export function MusicPlayer() {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-        className="fixed bottom-0 left-0 right-0 z-50 border-t border-blue-500/15 bg-zinc-950/90 backdrop-blur-2xl px-7 pt-2.5 pb-2"
+        className="fixed bottom-0 left-0 right-0 z-50 border-t border-blue-500/15 bg-zinc-950/90 backdrop-blur-2xl px-4 sm:px-7 pt-2.5 pb-2"
       >
-        <div className="flex items-center gap-4">
+        {/* ── Progress bar — full width, di atas segalanya di mobile ── */}
+        <div
+          className="w-full h-0.75 bg-white/8 rounded-full cursor-pointer relative group/prog mb-2.5 sm:hidden"
+          onClick={handleProgressClick}
+        >
+          <div
+            className="h-full bg-blue-500 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        <div className="flex items-center gap-3">
 
           {/* ── Track info ── */}
-          <div className="flex items-center gap-2.5 w-48 shrink-0">
-            {/* Album art */}
-            <div className="w-9.5 h-9.5 rounded-lg shrink-0 relative overflow-hidden">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1 sm:flex-none sm:w-48 sm:shrink-0">
+            <div className="w-9 h-9 rounded-lg shrink-0 relative overflow-hidden">
               {currentTrack.cover ? (
                 <Image
                   src={currentTrack.cover}
                   alt={`${currentTrack.title} cover`}
                   fill
-                  sizes="38px"
+                  sizes="36px"
                   className="object-cover"
                 />
               ) : (
@@ -71,14 +81,52 @@ export function MusicPlayer() {
             <button
               type="button"
               aria-label="Like song"
-              className="text-blue-500 hover:text-blue-400 transition-colors shrink-0"
+              className="text-blue-500 hover:text-blue-400 transition-colors shrink-0 hidden sm:block"
             >
               <Heart size={14} fill="currentColor" />
             </button>
           </div>
 
-          {/* ── Controls + progress ── */}
-          <div className="flex-1 flex flex-col items-center gap-1.5">
+          {/* ── Controls mobile: hanya prev + play + next ── */}
+          <div className="flex items-center gap-2 shrink-0 sm:hidden">
+            <button
+              type="button"
+              onClick={skipPrev}
+              aria-label="Previous track"
+              className="w-7 h-7 flex items-center justify-center text-zinc-400"
+            >
+              <SkipBack size={15} />
+            </button>
+            <button
+              type="button"
+              onClick={togglePlay}
+              aria-label={isPlaying ? 'Pause' : 'Play'}
+              className="w-9 h-9 rounded-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center text-white transition-colors active:scale-95"
+            >
+              {isPlaying ? <Pause size={15} /> : <Play size={15} className="ml-0.5" />}
+            </button>
+            <button
+              type="button"
+              onClick={skipNext}
+              aria-label="Next track"
+              className="w-7 h-7 flex items-center justify-center text-zinc-400"
+            >
+              <SkipForward size={15} />
+            </button>
+          </div>
+
+          {/* ── Lyrics button mobile ── */}
+          <button
+            type="button"
+            onClick={toggleLyrics}
+            aria-label="Toggle lyrics"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-500 hover:bg-white/5 transition-all shrink-0 sm:hidden"
+          >
+            <MessageSquare size={15} />
+          </button>
+
+          {/* ── Controls desktop: full controls + progress ── */}
+          <div className="hidden sm:flex flex-1 flex-col items-center gap-1.5">
             <div className="flex items-center gap-3.5">
               <CtrlBtn onClick={toggleShuffle} active={isShuffle} ariaLabel="Shuffle">
                 <Shuffle size={13} />
@@ -102,7 +150,7 @@ export function MusicPlayer() {
               </CtrlBtn>
             </div>
 
-            {/* Progress bar */}
+            {/* Progress bar desktop */}
             <div className="w-full flex items-center gap-2">
               <span className="text-[10px] text-zinc-600 font-mono w-8 text-right shrink-0">
                 {formatTime(currentTime)}
@@ -124,8 +172,8 @@ export function MusicPlayer() {
             </div>
           </div>
 
-          {/* ── Right controls ── */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* ── Right controls desktop ── */}
+          <div className="hidden sm:flex items-center gap-2 shrink-0">
             <button
               type="button"
               onClick={toggleLyrics}
@@ -144,6 +192,7 @@ export function MusicPlayer() {
               </div>
             </div>
           </div>
+
         </div>
 
         <p className="text-center font-['Bebas_Neue'] text-[9px] tracking-[4px] text-blue-900 mt-1 select-none">
